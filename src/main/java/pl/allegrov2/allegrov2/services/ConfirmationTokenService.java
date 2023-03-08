@@ -36,7 +36,6 @@ public class ConfirmationTokenService {
         );
     }
 
-    //todo remove expired tokens from database?
     public boolean confirmToken(String confirmationTokenUUID){
         Optional<ConfirmationToken> optToken = tokenRepository.findByToken(confirmationTokenUUID);
 

@@ -5,10 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Min;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,6 +15,8 @@ import java.util.Set;
 @Table(name = "product")
 @Getter @Setter
 @NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class Product {
 
     @SequenceGenerator(

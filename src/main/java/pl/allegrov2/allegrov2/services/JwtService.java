@@ -21,7 +21,10 @@ import java.util.function.Function;
 @AllArgsConstructor
 public class JwtService {
 
+    // TODO: resolve SignatureException?
+
     private final static String SECRET_KEY = "214125442A472D4B6150645367566B58703273357638792F423F4528482B4D62";
+    private final static int EXPIRATION_TIME_IN_HOURS = 24;
 
     public String extractTokenFromAuthHeader(String authHeader) {
 
@@ -48,8 +51,8 @@ public class JwtService {
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setIssuedAt(new Date(System.currentTimeMillis()))  //fixme remove this
+                .setExpiration(new Date(System.currentTimeMillis() + hoursToMilliseconds(EXPIRATION_TIME_IN_HOURS)))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -82,5 +85,9 @@ public class JwtService {
     private Key getSigningKey(){
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    private int hoursToMilliseconds(int hours){
+        return hours * 60 * 60 * 1000;
     }
 }

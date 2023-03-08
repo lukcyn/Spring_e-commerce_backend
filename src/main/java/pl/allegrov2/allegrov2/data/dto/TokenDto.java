@@ -1,7 +1,6 @@
-package pl.allegrov2.allegrov2.data.dto.user;
+package pl.allegrov2.allegrov2.data.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter @Setter
@@ -10,11 +9,9 @@ import lombok.*;
 @ToString
 public class TokenDto {
 
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "email field is required")
     private String email;
 
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "token field is required")
     private String token;
 }

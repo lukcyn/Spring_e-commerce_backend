@@ -2,15 +2,14 @@ package pl.allegrov2.allegrov2.data.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "photo")
 @Getter @Setter
 @NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class Photo {
 
     @SequenceGenerator(

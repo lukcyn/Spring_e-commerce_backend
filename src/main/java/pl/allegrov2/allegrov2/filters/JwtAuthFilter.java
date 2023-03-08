@@ -13,16 +13,21 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.core.context.SecurityContextHolder;
+import pl.allegrov2.allegrov2.controllers.AuthController;
 import pl.allegrov2.allegrov2.services.JwtService;
-import pl.allegrov2.allegrov2.services.UserService;
 
 
 import java.io.IOException;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 // Class intercepts requests to check whether it is authenticated
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
+
+    // TODO resolve exception if token is expired
 
     private final JwtService jwtService;
     private final UserDetailsService userService;
@@ -37,6 +42,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
 
         if(authHeader == null || !authHeader.startsWith("Bearer ")){
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        //fixme to different filter
+        if(jwtService.isTokenExpired(request.getHeader("Authorization")))
+        {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token has expired. Login at " +
+                    linkTo(methodOn(AuthController.class).login(null)).withRel("Login"));
+
             filterChain.doFilter(request, response);
             return;
         }

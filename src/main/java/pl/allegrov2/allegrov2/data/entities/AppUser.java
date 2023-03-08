@@ -6,7 +6,7 @@ import org.hibernate.annotations.Nationalized;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import pl.allegrov2.allegrov2.data.dto.user.UserDetailsDto;
+import pl.allegrov2.allegrov2.data.dto.UserDetailsBasicDto;
 import pl.allegrov2.allegrov2.data.enums.AppUserRole;
 
 import java.util.Collection;
@@ -123,10 +123,9 @@ public class AppUser implements UserDetails {
         return enabled;
     }
 
-    public void updateDetails(UserDetailsDto detailsDto){
+    public void updateDetails(UserDetailsBasicDto detailsDto){
         this.name = detailsDto.getName();
         this.surname = detailsDto.getSurname();
-        this.email = detailsDto.getEmail();
         this.phoneNumber = detailsDto.getPhoneNumber();
         this.address.updateDetails(detailsDto.getAddress());
     }

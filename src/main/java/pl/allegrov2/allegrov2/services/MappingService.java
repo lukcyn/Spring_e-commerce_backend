@@ -3,10 +3,10 @@ package pl.allegrov2.allegrov2.services;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import pl.allegrov2.allegrov2.data.dto.user.AddressDto;
-import pl.allegrov2.allegrov2.data.dto.user.RegistrationDto;
-import pl.allegrov2.allegrov2.data.dto.user.TokenDto;
-import pl.allegrov2.allegrov2.data.dto.user.UserDetailsDto;
+import pl.allegrov2.allegrov2.data.dto.AddressDto;
+import pl.allegrov2.allegrov2.data.dto.RegistrationDto;
+import pl.allegrov2.allegrov2.data.dto.TokenDto;
+import pl.allegrov2.allegrov2.data.dto.UserDetailsEmailDto;
 import pl.allegrov2.allegrov2.data.entities.Address;
 import pl.allegrov2.allegrov2.data.entities.AppUser;
 import pl.allegrov2.allegrov2.data.enums.AppUserRole;
@@ -35,8 +35,8 @@ public class MappingService {
         return modelMapper.map(address, AddressDto.class);
     }
 
-    public UserDetailsDto convertToDto(AppUser appUser){
-        UserDetailsDto userDetails = modelMapper.map(appUser, UserDetailsDto.class);
+    public UserDetailsEmailDto convertToDto(AppUser appUser){
+        UserDetailsEmailDto userDetails = modelMapper.map(appUser, UserDetailsEmailDto.class);
         userDetails.setAddress(convertToDto(appUser.getAddress()));
 
         return userDetails;

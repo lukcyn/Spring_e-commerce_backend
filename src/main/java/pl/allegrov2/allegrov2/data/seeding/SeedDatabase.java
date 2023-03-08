@@ -27,6 +27,7 @@ public class SeedDatabase{
 
     private final static int PRODUCTS_COUNT = 1000;
     private final static int USERS_COUNT = 100;
+    private final static String PASSWORD = "Password";
 
 
     private final IUserRepository userRepository;
@@ -36,10 +37,10 @@ public class SeedDatabase{
     private final Faker faker;
     private final BCryptPasswordEncoder encoder;
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
     // Temporary data for product generation
-    private List<String> brandNames = initBrands();
+    private final List<String> brandNames = initBrands();
 
     @Bean
     public CommandLineRunner seedData(){
@@ -113,7 +114,7 @@ public class SeedDatabase{
                 role,
                 false,
                 true,
-                encoder.encode("Password"),
+                encoder.encode(PASSWORD),
                 new Address(
                         faker.address().streetName(),
                         Integer.parseInt(faker.address().streetAddressNumber()),

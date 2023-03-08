@@ -62,47 +62,4 @@ public class EmailService implements IEmailSender {
         mailSender.send(message);
     }
           // TODO: ideally should use queue to retry sending emails
-//    public MimeMessage createEmail(String to, String text, String subject) throws MessagingException {
-//
-//        Properties prop = new Properties();
-//        Session session = Session.getDefaultInstance(prop, null);
-//        MimeMessage message = new MimeMessage(session);
-//
-//        message.setFrom(new InternetAddress("noreply@allegrov2.com"));
-//        message.addRecipient(MimeMessage.RecipientType.TO, new InternetAddress(to));
-//        message.setSubject(subject);
-//        message.setText(text);
-//
-//        return message;
-//    }
-
-//    private Message createMessageWithEmail(MimeMessage content) throws MessagingException, IOException {
-//        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-//        content.writeTo(buffer);
-//        byte[] bytes = buffer.toByteArray();
-//
-//        String encodedEmail = Base64.encodeBase64URLSafeString(bytes);
-//        Message message = new Message();
-//        message.setRaw(encodedEmail);
-//
-//        return message;
-//    }
-//
-//    private void send(MimeMessage mimeMessage, Message message) throws IOException {
-//        GoogleCredentials credentials = GoogleCredentials.getApplicationDefault()
-//                .createScoped(GmailScopes.GMAIL_SEND);
-//
-//        HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
-//
-//        Gmail service = new Gmail.Builder(new NetHttpTransport(),
-//                GsonFactory.getDefaultInstance(),
-//                requestInitializer)
-//                .setApplicationName("Gmail samples")
-//                .build();
-//
-//            // Create send message
-//            message = service.users().messages().send("me", message).execute();
-//            LOGGER.error("Message id: " + message.getId());         //Todo remove after debuggind
-//            LOGGER.error(message.toPrettyString());
-//    }
 }

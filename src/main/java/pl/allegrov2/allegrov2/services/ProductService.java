@@ -22,12 +22,12 @@ public class ProductService {
         return productRepo.findById(id);
     }
 
-    public Page<Product> getAll(Pageable pageable){
+    public Page<Product> getPage(Pageable pageable){
         return paginationRepo.findAll(pageable);
     }
 
-    public void saveProduct(Product product){
-        productRepo.save(product);
+    public Product saveProduct(Product product){
+        return productRepo.save(product);
     }
 
     public void deleteById(Long id){

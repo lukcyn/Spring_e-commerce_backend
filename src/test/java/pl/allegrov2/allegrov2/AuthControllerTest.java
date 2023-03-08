@@ -1,27 +1,19 @@
 package pl.allegrov2.allegrov2;
 
-import lombok.RequiredArgsConstructor;
-import org.antlr.v4.runtime.Token;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.allegrov2.allegrov2.controllers.AuthController;
-import pl.allegrov2.allegrov2.data.dto.user.AddressDto;
-import pl.allegrov2.allegrov2.data.dto.user.LoginDto;
-import pl.allegrov2.allegrov2.data.dto.user.RegistrationDto;
-import pl.allegrov2.allegrov2.data.dto.user.TokenDto;
+import pl.allegrov2.allegrov2.data.dto.AddressDto;
+import pl.allegrov2.allegrov2.data.dto.LoginDto;
+import pl.allegrov2.allegrov2.data.dto.RegistrationDto;
+import pl.allegrov2.allegrov2.data.dto.TokenDto;
 import pl.allegrov2.allegrov2.data.entities.AppUser;
 import pl.allegrov2.allegrov2.repositories.IUserRepository;
-
-import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -62,9 +54,9 @@ public class AuthControllerTest {
 
         LoginDto loginDto = new LoginDto(registrationDto.getEmail(), registrationDto.getPassword());
 
-        EntityModel<TokenDto> response = controller.login(loginDto);
+        ResponseEntity<TokenDto> response = controller.login(loginDto);
 
-        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test

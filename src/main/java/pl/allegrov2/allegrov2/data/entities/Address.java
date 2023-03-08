@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
-import pl.allegrov2.allegrov2.data.dto.user.AddressDto;
+import pl.allegrov2.allegrov2.data.dto.AddressDto;
 
 @Getter @Setter
 @NoArgsConstructor
