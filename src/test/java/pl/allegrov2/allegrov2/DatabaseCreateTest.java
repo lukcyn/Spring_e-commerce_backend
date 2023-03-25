@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import pl.allegrov2.allegrov2.data.entities.Address;
 import pl.allegrov2.allegrov2.data.entities.AppUser;
 import pl.allegrov2.allegrov2.data.enums.AppUserRole;
-import pl.allegrov2.allegrov2.repositories.IUserRepository;
+import pl.allegrov2.allegrov2.repositories.UserRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DatabaseCreateTest {
 
     @Autowired
-    private IUserRepository userRepository;
+    private UserRepository userRepository;
 
     @Test
     public void givenUser_whenSave_thenGetOk() {

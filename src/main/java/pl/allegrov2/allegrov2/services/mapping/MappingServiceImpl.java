@@ -1,4 +1,4 @@
-package pl.allegrov2.allegrov2.services;
+package pl.allegrov2.allegrov2.services.mapping;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -13,11 +13,10 @@ import pl.allegrov2.allegrov2.data.enums.AppUserRole;
 
 @Service
 @AllArgsConstructor
-public class MappingService {
+public class MappingServiceImpl implements MappingService {
 
     private ModelMapper modelMapper;
 
-    //TODO: unit tests
     public AppUser convertToEntity(RegistrationDto userDto,
                                    String pwdHashAndSalt,
                                    AppUserRole role,

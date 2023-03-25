@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import pl.allegrov2.allegrov2.controllers.AuthController;
-import pl.allegrov2.allegrov2.services.JwtService;
+import pl.allegrov2.allegrov2.services.token.JwtService;
 
 
 import java.io.IOException;

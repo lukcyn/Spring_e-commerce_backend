@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import pl.allegrov2.allegrov2.data.entities.Product;
 
 @Repository
-public interface IProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
 }

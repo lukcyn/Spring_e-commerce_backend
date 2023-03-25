@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import pl.allegrov2.allegrov2.services.JwtService;
+import pl.allegrov2.allegrov2.services.token.JwtService;
 
 import java.io.IOException;
 

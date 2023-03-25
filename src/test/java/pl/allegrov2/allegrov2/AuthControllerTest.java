@@ -13,7 +13,7 @@ import pl.allegrov2.allegrov2.data.dto.LoginDto;
 import pl.allegrov2.allegrov2.data.dto.RegistrationDto;
 import pl.allegrov2.allegrov2.data.dto.TokenDto;
 import pl.allegrov2.allegrov2.data.entities.AppUser;
-import pl.allegrov2.allegrov2.repositories.IUserRepository;
+import pl.allegrov2.allegrov2.repositories.UserRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +27,7 @@ public class AuthControllerTest {
     private BCryptPasswordEncoder encoder;
 
     @Autowired
-    private IUserRepository userRepository;
+    private UserRepository userRepository;
 
     private RegistrationDto registrationDto;
 

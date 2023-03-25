@@ -1,6 +1,7 @@
-package pl.allegrov2.allegrov2.services;
+package pl.allegrov2.allegrov2.services.auth;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.allegrov2.allegrov2.data.dto.LoginDto;
@@ -9,30 +10,29 @@ import pl.allegrov2.allegrov2.data.dto.TokenDto;
 import pl.allegrov2.allegrov2.data.entities.AppUser;
 import pl.allegrov2.allegrov2.data.entities.ConfirmationToken;
 import pl.allegrov2.allegrov2.data.enums.AppUserRole;
-import pl.allegrov2.allegrov2.interfaces.IEmailSender;
-import pl.allegrov2.allegrov2.repositories.IUserRepository;
+import pl.allegrov2.allegrov2.services.token.ConfirmationTokenServiceImpl;
+import pl.allegrov2.allegrov2.services.token.JwtServiceImpl;
+import pl.allegrov2.allegrov2.services.mapping.MappingServiceImpl;
+import pl.allegrov2.allegrov2.services.email.EmailService;
+import pl.allegrov2.allegrov2.repositories.UserRepository;
 import pl.allegrov2.allegrov2.validation.exceptions.ResourceTakenException;
 import pl.allegrov2.allegrov2.validation.exceptions.UnauthorizedException;
 
 @Service
 @AllArgsConstructor
-public class AuthenticationService {
+public class AuthenticationServiceImpl implements AuthService {
 
-    private static final String CONFIRMATION_LINK_PREFIX =
-            "http://localhost:8080/api/auth/confirm-email?token=";
-    // TODO: may change it with some app constant
+    @Value("${app.confirmation.link.prefix}")
+    private String CONFIRMATION_LINK_PREFIX;
 
-    private final IUserRepository userRepository;
-    private final ConfirmationTokenService confirmationTokenService;
-    private final JwtService jwtTokenService;
-    private final IEmailSender emailService;
+    private final UserRepository userRepository;
+    private final ConfirmationTokenServiceImpl confirmationTokenService;
+    private final JwtServiceImpl jwtTokenService;
+    private final EmailService emailService;
     private final BCryptPasswordEncoder encoder;
-    private final MappingService mapper;
+    private final MappingServiceImpl mapper;
 
-    /** Saves user in database and sends confirmation token.
-     * The user will be unauthorized until email is confirmed*/
     public ConfirmationToken signUpUser(AppUser user){
-        //Check if user exists in database
         if(userRepository.findByEmail(user.getEmail()).isPresent())
             throw new ResourceTakenException("Email is taken");
 
@@ -47,10 +47,6 @@ public class AuthenticationService {
         return confToken;
     }
 
-    /**
-     * Saves user in database and sends confirmation token.
-     * The user will be unauthorized until email is confirmed
-     * */
     public ConfirmationToken signUpUser(RegistrationDto user){
         return signUpUser(mapper.convertToEntity(
                 user,

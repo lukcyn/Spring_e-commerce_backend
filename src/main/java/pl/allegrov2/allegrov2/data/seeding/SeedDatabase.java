@@ -7,15 +7,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.allegrov2.allegrov2.data.entities.Address;
 import pl.allegrov2.allegrov2.data.entities.AppUser;
 import pl.allegrov2.allegrov2.data.entities.Photo;
 import pl.allegrov2.allegrov2.data.entities.Product;
 import pl.allegrov2.allegrov2.data.enums.AppUserRole;
-import pl.allegrov2.allegrov2.repositories.IProductRepository;
-import pl.allegrov2.allegrov2.repositories.IUserRepository;
+import pl.allegrov2.allegrov2.repositories.ProductRepository;
+import pl.allegrov2.allegrov2.repositories.UserRepository;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -30,8 +29,8 @@ public class SeedDatabase{
     private final static String PASSWORD = "Password";
 
 
-    private final IUserRepository userRepository;
-    private final IProductRepository productRepository;
+    private final UserRepository userRepository;
+    private final ProductRepository productRepository;
     private final Logger log = LoggerFactory.getLogger(SeedDatabase.class);
 
     private final Faker faker;
@@ -46,9 +45,7 @@ public class SeedDatabase{
     public CommandLineRunner seedData(){
 
         //todo check if in development and whether database contains information
-        return args -> {
-            seedDatabase();
-        };
+        return args -> seedDatabase();
     }
 
     private void seedDatabase(){
@@ -98,11 +95,9 @@ public class SeedDatabase{
         if(amount <= 0)
             amount = 1;
 
-        List<AppUser> users = IntStream.rangeClosed(1, amount)
+        return IntStream.rangeClosed(1, amount)
                 .mapToObj(i -> generateUser(AppUserRole.USER))
                 .toList();
-
-        return users;
     }
 
     private AppUser generateUser(AppUserRole role, String email){
@@ -144,7 +139,7 @@ public class SeedDatabase{
         List<Photo> photos = new ArrayList<>();
         photos.add(photo);
 
-        product.setPhotos(new ArrayList(photos));
+        product.setPhotos(new ArrayList<>(photos));
 
         return product;
     }

@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import pl.allegrov2.allegrov2.data.dto.LoginDto;
 import pl.allegrov2.allegrov2.data.dto.RegistrationDto;
 import pl.allegrov2.allegrov2.data.dto.TokenDto;
-import pl.allegrov2.allegrov2.services.AuthenticationService;
-import pl.allegrov2.allegrov2.services.ConfirmationTokenService;
+import pl.allegrov2.allegrov2.services.auth.AuthService;
+import pl.allegrov2.allegrov2.services.token.ConfirmationTokenService;
 
 
 @RestController
@@ -16,7 +16,7 @@ import pl.allegrov2.allegrov2.services.ConfirmationTokenService;
 @RequestMapping("api/auth")
 public class AuthController {
 
-    private final AuthenticationService authService;
+    private final AuthService authService;
     private final ConfirmationTokenService tokenService;
 
     @PostMapping("/register")

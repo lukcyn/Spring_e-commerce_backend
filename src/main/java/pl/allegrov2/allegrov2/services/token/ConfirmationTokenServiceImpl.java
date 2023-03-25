@@ -1,11 +1,11 @@
-package pl.allegrov2.allegrov2.services;
+package pl.allegrov2.allegrov2.services.token;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import pl.allegrov2.allegrov2.data.entities.AppUser;
 import pl.allegrov2.allegrov2.data.entities.ConfirmationToken;
-import pl.allegrov2.allegrov2.repositories.IConfirmationTokenRepository;
-import pl.allegrov2.allegrov2.repositories.IUserRepository;
+import pl.allegrov2.allegrov2.repositories.ConfirmationTokenRepository;
+import pl.allegrov2.allegrov2.repositories.UserRepository;
 import pl.allegrov2.allegrov2.validation.exceptions.UnauthorizedException;
 
 import java.time.LocalDateTime;
@@ -14,10 +14,10 @@ import java.util.UUID;
 
 @Component
 @AllArgsConstructor
-public class ConfirmationTokenService {
+public class ConfirmationTokenServiceImpl implements ConfirmationTokenService {
 
-    private final IConfirmationTokenRepository tokenRepository;
-    private final IUserRepository userRepository;
+    private final ConfirmationTokenRepository tokenRepository;
+    private final UserRepository userRepository;
 
     public void saveConfirmationToken(ConfirmationToken token) {
         tokenRepository.save(token);

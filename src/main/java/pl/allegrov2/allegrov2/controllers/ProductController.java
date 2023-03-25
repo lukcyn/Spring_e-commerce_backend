@@ -1,20 +1,18 @@
 package pl.allegrov2.allegrov2.controllers;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pl.allegrov2.allegrov2.data.entities.Product;
 import pl.allegrov2.allegrov2.helpers.assemblers.ProductAssembler;
-import pl.allegrov2.allegrov2.services.ProductService;
+import pl.allegrov2.allegrov2.services.product.ProductService;
 import pl.allegrov2.allegrov2.validation.exceptions.NotFoundException;
 
 @Controller
@@ -38,12 +36,9 @@ public class ProductController {
     }
 
     //todo sort and filter
-    @GetMapping(path ="/products", params = {"page", "size"})
+    @GetMapping(path ="/products")
     @ResponseBody
-    public CollectionModel<EntityModel<Product>> getAllPaginated(
-            @RequestParam("page") int page,
-            @RequestParam("size") int size) {
-
+    public CollectionModel<EntityModel<Product>> getAllPaginated(int page, int size) {
         return pagedAssembler.toModel(
                 productService.getPage(PageRequest.of(page, size)),
                 productAssembler

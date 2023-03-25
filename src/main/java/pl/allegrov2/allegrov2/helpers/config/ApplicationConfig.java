@@ -12,13 +12,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.allegrov2.allegrov2.validation.exceptions.NotFoundException;
 import pl.allegrov2.allegrov2.validation.exceptions.UnauthorizedException;
-import pl.allegrov2.allegrov2.repositories.IUserRepository;
+import pl.allegrov2.allegrov2.repositories.UserRepository;
 
 @Configuration
 @AllArgsConstructor
 public class ApplicationConfig {
 
-    private IUserRepository userRepository;
+    private UserRepository userRepository;
 
     // Configure the way for the service to get data from database
     @Bean

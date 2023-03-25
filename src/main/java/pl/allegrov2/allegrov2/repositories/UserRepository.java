@@ -7,6 +7,6 @@ import pl.allegrov2.allegrov2.data.entities.AppUser;
 import java.util.Optional;
 
 @Repository
-public interface IUserRepository extends JpaRepository<AppUser, Long> {
+public interface UserRepository extends JpaRepository<AppUser, Long> {
     Optional<AppUser> findByEmail(String email);
 }

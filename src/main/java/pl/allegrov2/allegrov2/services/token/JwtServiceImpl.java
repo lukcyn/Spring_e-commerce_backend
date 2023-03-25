@@ -1,4 +1,4 @@
-package pl.allegrov2.allegrov2.services;
+package pl.allegrov2.allegrov2.services.token;
 
 
 import io.jsonwebtoken.Claims;
@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import pl.allegrov2.allegrov2.validation.exceptions.UnauthorizedException;
@@ -19,12 +20,14 @@ import java.util.function.Function;
 
 @Service
 @AllArgsConstructor
-public class JwtService {
+public class JwtServiceImpl implements JwtService {
 
     // TODO: resolve SignatureException?
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
 
-    private final static String SECRET_KEY = "214125442A472D4B6150645367566B58703273357638792F423F4528482B4D62";
-    private final static int EXPIRATION_TIME_IN_HOURS = 24;
+    @Value("${jwt.expiration-time-in-hours}")
+    private int EXPIRATION_TIME_IN_HOURS;
 
     public String extractTokenFromAuthHeader(String authHeader) {
 
@@ -43,10 +46,7 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(
-            Map<String, Object> extraClaims,
-            UserDetails userDetails
-    ){
+    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
