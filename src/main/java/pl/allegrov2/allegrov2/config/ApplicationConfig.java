@@ -1,4 +1,4 @@
-package pl.allegrov2.allegrov2.helpers.config;
+package pl.allegrov2.allegrov2.config;
 
 import com.github.javafaker.Faker;
 import lombok.AllArgsConstructor;
@@ -20,10 +20,8 @@ public class ApplicationConfig {
 
     private UserRepository userRepository;
 
-    // Configure the way for the service to get data from database
     @Bean
     public UserDetailsService userDetailsService() {
-        //loadUserByUsername()
         return username -> userRepository.findByEmail(username)
                 .orElseThrow(() -> new NotFoundException("User with email: " + username + " not found."));
     }
@@ -58,5 +56,4 @@ public class ApplicationConfig {
     public Faker faker(){
         return new Faker();
     }
-
 }

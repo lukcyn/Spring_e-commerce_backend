@@ -1,4 +1,4 @@
-package pl.allegrov2.allegrov2.helpers.config;
+package pl.allegrov2.allegrov2.config;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -37,7 +37,6 @@ public class AuthController {
     @GetMapping("/login")
     @ResponseBody
     public ResponseEntity<TokenDto> login(@Valid @RequestBody LoginDto loginDto){
-
         return ResponseEntity
                 .ok()
                 .body(authService.login(loginDto));

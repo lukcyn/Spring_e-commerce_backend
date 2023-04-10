@@ -9,8 +9,12 @@ import pl.allegrov2.allegrov2.data.entities.AppUser;
 import pl.allegrov2.allegrov2.data.enums.AppUserRole;
 
 public interface MappingService {
+
     AppUser convertToEntity(RegistrationDto userDto, String pwdHashAndSalt, AppUserRole role, boolean enabled, boolean locked);
+
     AddressDto convertToDto(Address address);
+
     UserDetailsEmailDto convertToDto(AppUser appUser);
+
     TokenDto convertToDto(AppUser user, String token);
 }

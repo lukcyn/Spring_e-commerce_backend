@@ -1,6 +1,6 @@
 package pl.allegrov2.allegrov2.services.auth;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,10 +19,10 @@ import pl.allegrov2.allegrov2.validation.exceptions.ResourceTakenException;
 import pl.allegrov2.allegrov2.validation.exceptions.UnauthorizedException;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthService {
 
-    @Value("${app.confirmation.link.prefix}")
+    @Value("${confirmation-token-prefix}")
     private String CONFIRMATION_LINK_PREFIX;
 
     private final UserRepository userRepository;
@@ -58,7 +58,7 @@ public class AuthenticationServiceImpl implements AuthService {
     }
 
     /**
-     * Returns a token required for user authorization
+     * @return token required for user authorization
      * */
     public TokenDto login(LoginDto user){
         AppUser appUser = userRepository.findByEmail(user.getEmail())
@@ -70,9 +70,7 @@ public class AuthenticationServiceImpl implements AuthService {
         return (mapper.convertToDto(appUser, jwtTokenService.generateToken(appUser)));
     }
 
-    /**
-     * Helper function that creates email content
-     * */
+
     private String buildEmail(String name, String link){
         return "Cześć " + name + "!\n"
                 +"Kliknij w link, aby aktywować konto: " + link;

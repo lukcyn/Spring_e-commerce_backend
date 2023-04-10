@@ -1,4 +1,4 @@
-package pl.allegrov2.allegrov2.helpers.assemblers;
+package pl.allegrov2.allegrov2.assemblers;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.hateoas.EntityModel;

@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-@AllArgsConstructor
 public class JwtServiceImpl implements JwtService {
 
     // TODO: resolve SignatureException?
@@ -51,7 +50,7 @@ public class JwtServiceImpl implements JwtService {
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))  //fixme remove this
+                .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + hoursToMilliseconds(EXPIRATION_TIME_IN_HOURS)))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();

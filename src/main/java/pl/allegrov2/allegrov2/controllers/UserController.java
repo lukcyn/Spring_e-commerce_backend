@@ -18,7 +18,7 @@ import pl.allegrov2.allegrov2.data.dto.UserDetailsBasicDto;
 import pl.allegrov2.allegrov2.data.dto.UserDetailsEmailDto;
 import pl.allegrov2.allegrov2.data.entities.AppUser;
 import pl.allegrov2.allegrov2.data.enums.AppUserRole;
-import pl.allegrov2.allegrov2.helpers.assemblers.UserDetailsAssembler;
+import pl.allegrov2.allegrov2.assemblers.UserDetailsAssembler;
 import pl.allegrov2.allegrov2.services.mapping.MappingService;
 import pl.allegrov2.allegrov2.services.token.JwtService;
 import pl.allegrov2.allegrov2.services.user.UserService;
@@ -40,7 +40,8 @@ public class UserController {
     @GetMapping("/users/details")
     @ResponseBody
     public EntityModel<UserDetailsEmailDto> getDetails(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) @NotBlank String authHeader) {
+            @RequestHeader(HttpHeaders.AUTHORIZATION)
+            @NotBlank String authHeader) {
 
         String email = jwtService.extractUsername(
                             jwtService.extractTokenFromAuthHeader(authHeader)

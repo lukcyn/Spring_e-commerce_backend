@@ -1,4 +1,4 @@
-package pl.allegrov2.allegrov2.helpers.config;
+package pl.allegrov2.allegrov2.config;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +28,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-
                 .authorizeHttpRequests()
 
                 .requestMatchers("/api/admin/**")
