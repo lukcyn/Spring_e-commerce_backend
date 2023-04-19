@@ -8,9 +8,10 @@ import pl.allegrov2.allegrov2.data.dto.AddressDto;
 
 @Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-
+@Builder
 @Entity
 @Table(name = "address")
 public class Address {
@@ -24,6 +25,7 @@ public class Address {
             strategy = GenerationType.SEQUENCE,
             generator = "address_sequence"
     )
+    @Column(name = "address_id")
     private Long id;
 
     @Column(length = 200, nullable = false)
@@ -41,6 +43,7 @@ public class Address {
 
     @OneToOne(mappedBy = "address", optional = false)
     @JsonIgnore
+    @ToString.Exclude
     private AppUser user;
 
     public Address(String streetName,

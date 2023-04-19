@@ -47,7 +47,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         //fixme to different filter
-        if(jwtService.isTokenExpired(request.getHeader("Authorization")))
+        if(jwtService.isTokenExpired(jwtService.extractTokenFromAuthHeader(authHeader)))
         {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token has expired. Login at " +
                     linkTo(methodOn(AuthController.class).login(null)).withRel("Login"));
@@ -56,14 +56,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Token without "Bearer " word
-        final String jwt = authHeader.substring(7);
-        final String userEmail = jwtService.extractUsername(jwt);
+        final String jwt = jwtService.extractTokenFromAuthHeader(authHeader);
+        final String username = jwtService.extractUsername(jwt);
 
         // If token contains username and is not authenticated yet, then authenticate
-        if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
+        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
             // Get user from database
-            UserDetails userDetails = userService.loadUserByUsername(userEmail);
+            UserDetails userDetails = userService.loadUserByUsername(username);
             if(jwtService.isTokenValid(jwt, userDetails)){
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,

@@ -6,7 +6,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -28,6 +27,7 @@ public class JwtServiceImpl implements JwtService {
     @Value("${jwt.expiration-time-in-hours}")
     private int EXPIRATION_TIME_IN_HOURS;
 
+    @Override
     public String extractTokenFromAuthHeader(String authHeader) {
 
         if(!authHeader.startsWith("Bearer "))
@@ -36,15 +36,23 @@ public class JwtServiceImpl implements JwtService {
         return authHeader.substring(7);
     }
 
+    @Override
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
+    @Override
+    public String extractUsernameFromAuthHeader(String authHeader) {
+        return extractUsername(extractTokenFromAuthHeader(authHeader));
+    }
+
+    @Override
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
         final Claims claims = extractClaims(token);
         return claimsResolver.apply(claims);
     }
 
+    @Override
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails){
         return Jwts
                 .builder()
@@ -56,21 +64,24 @@ public class JwtServiceImpl implements JwtService {
                 .compact();
     }
 
+    @Override
     public String generateToken(UserDetails userDetails){
         return generateToken(new HashMap<>(), userDetails);
     }
 
+    @Override
     public boolean isTokenValid(String token, UserDetails userDetails){
         return !isTokenExpired(token) && extractUsername(token).equals(userDetails.getUsername());
     }
 
+    @Override
     public boolean isTokenExpired(String token){
         return extractExpiration(token).before(new Date());
     }
 
-    private Date extractExpiration(String token){
-        return extractClaim(token, Claims::getExpiration);
-    }
+        private Date extractExpiration(String token){
+            return extractClaim(token, Claims::getExpiration);
+        }
 
     private Claims extractClaims(String token){
         return Jwts

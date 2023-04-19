@@ -15,6 +15,6 @@ public interface ProductPaginatedRepository extends PagingAndSortingRepository<P
 
     @Query("SELECT prod FROM Product prod " +
             "WHERE (prod.brandName LIKE %:searchString% OR prod.modelName LIKE %:searchString%) " +
-            "AND (:inStock = false OR prod.quantity > 0)")
+            "AND (:inStock = false OR prod.stock > 0)")
     Page<Product> findBy(Pageable pageable, String searchString, @Param("inStock") boolean inStock);
 }

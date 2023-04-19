@@ -20,7 +20,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class UserDetailsAssembler implements RepresentationModelAssembler<UserDetailsEmailDto, EntityModel<UserDetailsEmailDto>> {
 
     @Override
-    public @NotNull EntityModel<UserDetailsEmailDto> toModel(UserDetailsEmailDto entity) {
+    public @NotNull EntityModel<UserDetailsEmailDto> toModel(@NotNull UserDetailsEmailDto entity) {
         return EntityModel.of(entity,
                 generateCommonLinks()
         );

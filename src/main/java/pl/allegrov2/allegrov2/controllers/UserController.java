@@ -43,9 +43,7 @@ public class UserController {
             @RequestHeader(HttpHeaders.AUTHORIZATION)
             @NotBlank String authHeader) {
 
-        String email = jwtService.extractUsername(
-                            jwtService.extractTokenFromAuthHeader(authHeader)
-                    );
+        String email = jwtService.extractUsernameFromAuthHeader(authHeader);
 
         AppUser user = userService.getUser(email);
 
@@ -61,9 +59,7 @@ public class UserController {
             @RequestBody @Valid UserDetailsBasicDto newDetails,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader){
 
-        String email = jwtService.extractUsername(
-                jwtService.extractTokenFromAuthHeader(authHeader)
-        );
+        String email = jwtService.extractUsernameFromAuthHeader(authHeader);
 
         // Update user details in database
         AppUser user = userService.getUser(email);
@@ -88,9 +84,7 @@ public class UserController {
         if(passwordDto.getNewPassword().equals(passwordDto.getConfirmPassword()))
             throw new MismatchException("New password is different than confirmed one");
 
-        String email = jwtService.extractUsername(
-                jwtService.extractTokenFromAuthHeader(authHeader)
-        );
+        String email = jwtService.extractUsernameFromAuthHeader(authHeader);
 
         AppUser user = userService.getUser(email);
 

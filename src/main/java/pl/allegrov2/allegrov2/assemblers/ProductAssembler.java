@@ -14,7 +14,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class ProductAssembler implements RepresentationModelAssembler<Product, EntityModel<Product>> {
 
     @Override
-    public @NotNull EntityModel<Product> toModel(Product entity) {
+    public @NotNull EntityModel<Product> toModel(@NotNull Product entity) {
         return EntityModel.of(entity,
             linkTo(methodOn(ProductController.class).getById(entity.getId())).withSelfRel()
         );

@@ -1,5 +1,6 @@
 package pl.allegrov2.allegrov2.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Nationalized;
@@ -7,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.allegrov2.allegrov2.data.dto.UserDetailsBasicDto;
+import pl.allegrov2.allegrov2.data.entities.cart.Cart;
 import pl.allegrov2.allegrov2.data.enums.AppUserRole;
 
 import java.util.Collection;
@@ -15,13 +17,13 @@ import java.util.Collections;
 
 @Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-
 @Entity
+@Builder
 @Table(name = "app_user")
 public class AppUser implements UserDetails {
-
 
     @SequenceGenerator(
             name="app_user_sequence",
@@ -32,6 +34,7 @@ public class AppUser implements UserDetails {
             strategy = GenerationType.SEQUENCE,
             generator = "app_user_sequence"
     )
+    @Column(name = "app_user_id")
     private Long id;
 
     @Column(length = 50, nullable = false)
@@ -61,29 +64,15 @@ public class AppUser implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
-    @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
+    @OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id", referencedColumnName = "address_id", nullable = false)
     private Address address;
 
-    public AppUser(String name,
-                   String surname,
-                   String email,
-                   int phoneNumber,
-                   AppUserRole role,
-                   boolean locked,
-                   boolean enabled,
-                   String password,
-                   Address address) {
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.role = role;
-        this.locked = locked;
-        this.enabled = enabled;
-        this.password = password;
-        this.address = address;
-    }
+    @JsonIgnore
+    @ToString.Exclude
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn       // TODO: Should admin have cart?
+    private Cart cart;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

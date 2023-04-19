@@ -12,6 +12,8 @@ public interface JwtService {
 
     String extractUsername(String token);
 
+    String extractUsernameFromAuthHeader(String authHeader);
+
     <T> T extractClaim(String token, Function<Claims, T> claimsResolver);
 
     String generateToken(Map<String, Object> extraClaims, UserDetails userDetails);

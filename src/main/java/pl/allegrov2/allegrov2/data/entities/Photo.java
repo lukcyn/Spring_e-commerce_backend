@@ -30,6 +30,7 @@ public class Photo {
     @ManyToOne
     @JoinColumn(name="product_id", referencedColumnName = "id",nullable = false)
     @JsonIgnore
+    @ToString.Exclude
     private Product product;
 
     public Photo(String url, Product product) {

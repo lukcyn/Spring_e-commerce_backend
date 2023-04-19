@@ -3,13 +3,10 @@ package pl.allegrov2.allegrov2.data.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Min;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "product")
@@ -31,7 +28,7 @@ public class Product {
     )
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", orphanRemoval = true)   // TODO should return in cart?
     private List<Photo> photos;
 
     @Column(nullable = false)
@@ -45,17 +42,18 @@ public class Product {
     private BigDecimal price;
 
     @Column(nullable = false)
-    private int quantity;
+    private Long stock;
 
-    public Product(List<Photo> photos, String brandName, String modelName, BigDecimal price, int quantity) {
+    public Product(List<Photo> photos, String brandName, String modelName, BigDecimal price, Long stock) {
         this.photos = photos;
         this.brandName = brandName;
         this.modelName = modelName;
         this.price = price;
-        this.quantity = quantity;
+        this.stock = stock;
     }
 
+    @JsonIgnore
     public boolean isAvailable(){
-        return quantity > 0;
+        return stock > 0;
     }
 }

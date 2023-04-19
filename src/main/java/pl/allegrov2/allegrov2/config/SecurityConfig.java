@@ -20,7 +20,6 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final EnabledUserFilter enabledUserFilter;
 
-
     private final AuthenticationProvider authenticationProvider;
 
     // TODO send message on token expired
@@ -42,8 +41,11 @@ public class SecurityConfig {
                 .requestMatchers("/api/users/**")
                     .authenticated()
 
-                .anyRequest()
+                .requestMatchers("/api/cart/**")
                     .authenticated()
+
+                .anyRequest()
+                    .permitAll()
 
                 .and()
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

@@ -5,7 +5,7 @@ import lombok.*;
 
 @Getter @Setter
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor @AllArgsConstructor
 public class UserDetailsEmailDto extends UserDetailsBasicDto {
 

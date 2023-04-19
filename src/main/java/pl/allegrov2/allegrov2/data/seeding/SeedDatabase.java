@@ -12,6 +12,7 @@ import pl.allegrov2.allegrov2.data.entities.Address;
 import pl.allegrov2.allegrov2.data.entities.AppUser;
 import pl.allegrov2.allegrov2.data.entities.Photo;
 import pl.allegrov2.allegrov2.data.entities.Product;
+import pl.allegrov2.allegrov2.data.entities.cart.Cart;
 import pl.allegrov2.allegrov2.data.enums.AppUserRole;
 import pl.allegrov2.allegrov2.repositories.ProductRepository;
 import pl.allegrov2.allegrov2.repositories.UserRepository;
@@ -101,22 +102,30 @@ public class SeedDatabase{
     }
 
     private AppUser generateUser(AppUserRole role, String email){
-        AppUser user = new AppUser(
-                faker.name().name(),
-                faker.name().lastName(),
-                email,
-                886432261,
-                role,
-                false,
-                true,
-                encoder.encode(PASSWORD),
-                new Address(
-                        faker.address().streetName(),
-                        Integer.parseInt(faker.address().streetAddressNumber()),
-                        Integer.parseInt(faker.address().streetAddressNumber()),
-                        faker.address().zipCode(),
-                        null
-                ));
+        Cart cart = Cart.builder()
+                .build();
+
+
+        AppUser user = AppUser.builder()
+                .name(faker.name().name())
+                .surname(faker.name().lastName())
+                .email(email)
+                .phoneNumber(886432261)
+                .role(role)
+                .enabled(true)
+                .locked(false)
+                .password(encoder.encode(PASSWORD))
+                .address(Address.builder()
+                        .streetName(faker.address().streetName())
+                        .streetNumber(Integer.parseInt(faker.address().streetAddressNumber()))
+                        .residenceNumber(Integer.parseInt(faker.address().streetAddressNumber()))
+                        .zipcode(faker.address().zipCode())
+                        .build())
+                .cart(cart)
+                .build();
+
+        cart.setUser(user);
+
         user.getAddress().setUser(user);
 
         return user;
@@ -132,7 +141,7 @@ public class SeedDatabase{
                 brandNames.get(random.nextInt(0, brandNames.size())),
                 faker.commerce().productName(),
                 new BigDecimal(random.nextFloat(1.0f, 1000.0f)),
-                random.nextInt(0, 10)
+                random.nextLong(0, 10)
         );
 
         Photo photo = new Photo(faker.internet().url(), product);

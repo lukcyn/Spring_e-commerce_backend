@@ -37,7 +37,7 @@ public class AuthControllerTest {
     void init()
     {
         registrationDto = new RegistrationDto(
-            "Name", "Surename", "Password", "Email", 123123123,
+            "Name", "Surename", "Password", "Email", "123123123",
                 new AddressDto("StreetName", 2, 2, "12-321")
         );
     }

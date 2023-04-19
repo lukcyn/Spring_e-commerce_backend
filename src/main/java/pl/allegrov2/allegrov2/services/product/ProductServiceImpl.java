@@ -19,8 +19,9 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepo;
     private final ProductPaginatedRepository paginationRepo;
 
-    public Optional<Product> getById(Long id){
-        return productRepo.findById(id);
+    public Product getById(Long id){
+        return productRepo.findById(id)
+                .orElseThrow(); // TODO exception
     }
 
     public Page<Product> getPage(Pageable pageable){
