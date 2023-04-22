@@ -3,12 +3,13 @@ package pl.allegrov2.allegrov2.services.cart;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import pl.allegrov2.allegrov2.data.entities.Product;
 import pl.allegrov2.allegrov2.data.entities.cart.Cart;
 import pl.allegrov2.allegrov2.data.entities.cart.CartItem;
 import pl.allegrov2.allegrov2.repositories.CartRepository;
 import pl.allegrov2.allegrov2.services.product.ProductService;
+import pl.allegrov2.allegrov2.validation.exceptions.NotFoundException;
+import pl.allegrov2.allegrov2.validation.exceptions.ResourceUnavailableException;
 
 import java.util.Optional;
 
@@ -49,14 +50,13 @@ public class CartServiceImpl implements CartService {
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public Cart removeItem(String userEmail, Long productId, int decQuantity) {
         Cart cart = getCart(userEmail);
-        Product product = productService.getById(productId);    // TODO find in cart?
+        Product product = productService.getById(productId);
         Optional<CartItem> cartItem = getItemIfPresent(cart, product);
 
         if(cartItem.isPresent())
             modifyItemQuantity(cart, cartItem.get(), product, decQuantity);
         else
-            throw new IllegalArgumentException("No such product with id " + productId + " in cart");
-        // TODO custom exception
+            throw new NotFoundException("No such product with id " + productId + " in cart");
 
         return cart;
     }
@@ -81,39 +81,26 @@ public class CartServiceImpl implements CartService {
     private void addItemToCart(Cart cart, Product product, int desiredQuantity) {
 
         long availableProducts = product.getStock();
+        throwIfUnavailable(availableProducts, desiredQuantity);
 
-        if (availableProducts - desiredQuantity < 0) {
-            throw new IllegalArgumentException("Not enough products in stock"); // TODO create custom exception
-        }
-
-        // Check if there is an card item with product in cart
         Optional<CartItem> cartItemExisting = getItemIfPresent(cart, product);
 
-        // Increase desiredQuantity
         if (cartItemExisting.isPresent()) {
-
-            if(availableProducts - cartItemExisting.get().getQuantity() - desiredQuantity < 0){
-                throw new IllegalArgumentException("Not enough products in stock"); // TODO create custom exception
-            }
-            cartItemExisting.get().addQuantity(desiredQuantity);
-
+            CartItem item = cartItemExisting.get();
+            throwIfUnavailable(availableProducts - item.getQuantity(), desiredQuantity);
+            item.addQuantity(desiredQuantity);
         } else {
             CartItem newCartItem = new CartItem(cart, product, desiredQuantity);
-            cart.addItem(newCartItem);     // TODO test if in cartItem i need to set up reference to cart
+            cart.addItem(newCartItem);
         }
 
         cartRepository.save(cart);
     }
 
-    private void addQuantityToCartItem(CartItem cartItem, long availableQuantity, int desiredQuantity){
-        if(availableQuantity - cartItem.getQuantity() - desiredQuantity < 0){
-            throw new IllegalArgumentException("Not enough products in stock"); // TODO create custom exception
+    private void throwIfUnavailable(long availableQuantity, int desiredQuantity){
+        if(availableQuantity - desiredQuantity < 0){
+            throw new ResourceUnavailableException("Not enough products in stock. " +
+                    "Required: " + desiredQuantity + "; Available: " + availableQuantity);
         }
-        cartItem.addQuantity(desiredQuantity);
-    }
-
-    private void addNewCartItem(Cart cart, Product product, int desiredQuantity){
-        CartItem newCartItem = new CartItem(cart, product, desiredQuantity);
-        cart.addItem(newCartItem);     // TODO test if in cartItem i need to set up reference to cart
     }
 }

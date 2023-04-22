@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import lombok.*;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,9 +13,9 @@ import java.util.List;
 @Table(name = "product")
 @Getter @Setter
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @ToString
-public class Product {
+public class Product extends RepresentationModel<Product> {
 
     @SequenceGenerator(
             name="product_sequence",

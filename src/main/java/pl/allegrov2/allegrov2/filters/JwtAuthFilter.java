@@ -8,13 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import pl.allegrov2.allegrov2.controllers.AuthController;
 import pl.allegrov2.allegrov2.services.token.JwtService;
+import pl.allegrov2.allegrov2.services.user.UserService;
 
 
 import java.io.IOException;
@@ -27,10 +27,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
 
-    // TODO resolve exception if token is expired
-
     private final JwtService jwtService;
-    private final UserDetailsService userService;
+    private final UserService userService;
 
     @Override
     protected void doFilterInternal(
@@ -66,7 +64,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if(jwtService.isTokenValid(jwt, userDetails)){
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
-                        null, //TODO: change?
+                        null,
                         userDetails.getAuthorities()
                 );
                 authToken.setDetails(

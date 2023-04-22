@@ -1,7 +1,6 @@
 package pl.allegrov2.allegrov2.data.entities.cart;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import pl.allegrov2.allegrov2.data.entities.AppUser;

@@ -3,6 +3,8 @@ package pl.allegrov2.allegrov2.services.user;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.allegrov2.allegrov2.data.dto.UserDetailsBasicDto;
@@ -22,7 +24,6 @@ public class UserServiceImpl implements UserService {
     private final UserPaginatedRepository paginatedRepository;
     private final MappingService mapper;
     private final BCryptPasswordEncoder encoder;
-
 
     public AppUser getUser(String email){
         return userRepository.findByEmail(email)
@@ -57,5 +58,11 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encoder.encode(newPassword));
 
         userRepository.save(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByEmail(username)
+                .orElseThrow(() -> new NotFoundException("User with email: " + username + " not found."));
     }
 }

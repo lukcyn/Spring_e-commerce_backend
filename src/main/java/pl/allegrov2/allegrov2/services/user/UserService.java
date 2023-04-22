@@ -2,12 +2,13 @@ package pl.allegrov2.allegrov2.services.user;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import pl.allegrov2.allegrov2.data.dto.UserDetailsBasicDto;
 import pl.allegrov2.allegrov2.data.dto.UserDetailsEmailDto;
 import pl.allegrov2.allegrov2.data.entities.AppUser;
 import pl.allegrov2.allegrov2.validation.exceptions.MismatchException;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
     AppUser getUser(String email);
 

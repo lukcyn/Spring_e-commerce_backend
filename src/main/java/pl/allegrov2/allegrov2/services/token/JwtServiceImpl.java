@@ -20,7 +20,6 @@ import java.util.function.Function;
 @Service
 public class JwtServiceImpl implements JwtService {
 
-    // TODO: resolve SignatureException?
     @Value("${jwt.secret}")
     private String SECRET_KEY;
 

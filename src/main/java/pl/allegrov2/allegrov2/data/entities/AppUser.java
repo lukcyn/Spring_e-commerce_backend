@@ -15,11 +15,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 
-@Getter @Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
 @Entity
 @Builder
 @Table(name = "app_user")

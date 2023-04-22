@@ -14,7 +14,6 @@ import java.util.List;
 @ControllerAdvice
 public class MethodArgumentNotValidResolver {
 
-    //todo test valid
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

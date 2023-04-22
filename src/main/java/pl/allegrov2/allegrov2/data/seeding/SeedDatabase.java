@@ -1,12 +1,12 @@
 package pl.allegrov2.allegrov2.data.seeding;
 
 import com.github.javafaker.Faker;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.allegrov2.allegrov2.data.entities.Address;
 import pl.allegrov2.allegrov2.data.entities.AppUser;
@@ -22,30 +22,38 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 @Configuration
-@RequiredArgsConstructor
+@Profile("dev")
 public class SeedDatabase{
 
     private final static int PRODUCTS_COUNT = 1000;
     private final static int USERS_COUNT = 100;
     private final static String PASSWORD = "Password";
 
-
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
-    private final Logger log = LoggerFactory.getLogger(SeedDatabase.class);
-
-    private final Faker faker;
     private final BCryptPasswordEncoder encoder;
 
-    private final Random random = new Random();
+    private final Logger log;
+    private final Faker faker;
+    private final Random random;
 
-    // Temporary data for product generation
+    public SeedDatabase(UserRepository userRepository,
+                        ProductRepository productRepository,
+                        BCryptPasswordEncoder encoder) {
+        this.userRepository = userRepository;
+        this.productRepository = productRepository;
+        this.encoder = encoder;
+
+        this.faker = new Faker();
+        this.random = new Random();
+        this.log = LoggerFactory.getLogger(SeedDatabase.class);
+    }
+
+    // Samples of brand names
     private final List<String> brandNames = initBrands();
 
     @Bean
     public CommandLineRunner seedData(){
-
-        //todo check if in development and whether database contains information
         return args -> seedDatabase();
     }
 
@@ -55,7 +63,7 @@ public class SeedDatabase{
         if(userRepository.count() <= 0){
             log.debug("Seeding users: ");
 
-            //Adding admin account:
+            //Adding admin account with known email:
             userRepository.save(generateUser(AppUserRole.ADMIN, "randomAdmin@random.com"));
 
             //Adding user account with known email
@@ -140,7 +148,7 @@ public class SeedDatabase{
                 null,
                 brandNames.get(random.nextInt(0, brandNames.size())),
                 faker.commerce().productName(),
-                new BigDecimal(random.nextFloat(1.0f, 1000.0f)),
+                BigDecimal.valueOf(random.nextFloat(1.0f, 1000.0f)),
                 random.nextLong(0, 10)
         );
 

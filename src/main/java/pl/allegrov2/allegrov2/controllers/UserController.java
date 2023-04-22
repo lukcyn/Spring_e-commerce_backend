@@ -77,7 +77,7 @@ public class UserController {
 
     @PutMapping("/users/password")
     @ResponseBody
-    public ResponseEntity<?> changePassword(
+    public ResponseEntity<Void> changePassword(
             @RequestBody @Valid PasswordDto passwordDto,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader){
 

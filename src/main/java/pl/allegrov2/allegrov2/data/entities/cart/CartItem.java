@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
+import org.springframework.hateoas.RepresentationModel;
 import pl.allegrov2.allegrov2.data.entities.Product;
 
 import javax.annotation.Nonnegative;
@@ -15,7 +16,7 @@ import javax.annotation.Nonnegative;
 @Builder
 @Table(name = "cart_item")
 @IdClass(CartItemCompositeKey.class)
-public class CartItem {
+public class CartItem extends RepresentationModel<CartItem> {
 
     @Id
     @ManyToOne

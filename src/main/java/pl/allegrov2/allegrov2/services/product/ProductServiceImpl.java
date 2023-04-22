@@ -8,8 +8,7 @@ import pl.allegrov2.allegrov2.data.entities.Product;
 import pl.allegrov2.allegrov2.data.helpers.ProductFilter;
 import pl.allegrov2.allegrov2.repositories.ProductPaginatedRepository;
 import pl.allegrov2.allegrov2.repositories.ProductRepository;
-
-import java.util.Optional;
+import pl.allegrov2.allegrov2.validation.exceptions.NotFoundException;
 
 
 @Service
@@ -21,7 +20,7 @@ public class ProductServiceImpl implements ProductService {
 
     public Product getById(Long id){
         return productRepo.findById(id)
-                .orElseThrow(); // TODO exception
+                .orElseThrow(() -> new NotFoundException("No product with id " + id + " found"));
     }
 
     public Page<Product> getPage(Pageable pageable){
