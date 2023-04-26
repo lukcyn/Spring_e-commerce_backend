@@ -6,12 +6,13 @@ import lombok.*;
 import pl.allegrov2.allegrov2.data.entities.AppUser;
 
 import java.util.List;
+import java.util.Objects;
 
-@Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter @Getter
 public class Cart {
 
     @Id
@@ -20,7 +21,6 @@ public class Cart {
 
     @MapsId
     @JsonIgnore
-    @ToString.Exclude
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private AppUser user;
@@ -30,5 +30,25 @@ public class Cart {
 
     public void addItem(CartItem cartItem){
         this.cartItems.add(cartItem);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cart cart = (Cart) o;
+        return Objects.equals(id, cart.id) && Objects.equals(user, cart.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user);
+    }
+
+    @Override
+    public String toString() {
+        return "Cart{" +
+                "id=" + id +
+                '}';
     }
 }

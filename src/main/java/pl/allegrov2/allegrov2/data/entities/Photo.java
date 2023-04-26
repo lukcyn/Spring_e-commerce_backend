@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "photo")
 @Getter @Setter
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
 public class Photo {
 
     @SequenceGenerator(
@@ -30,11 +30,31 @@ public class Photo {
     @ManyToOne
     @JoinColumn(name="product_id", referencedColumnName = "id",nullable = false)
     @JsonIgnore
-    @ToString.Exclude
     private Product product;
 
     public Photo(String url, Product product) {
         this.url = url;
         this.product = product;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Photo photo = (Photo) o;
+        return Objects.equals(id, photo.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Photo{" +
+                "id=" + id +
+                ", url='" + url + '\'' +
+                '}';
     }
 }

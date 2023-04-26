@@ -15,13 +15,14 @@ import pl.allegrov2.allegrov2.data.enums.AppUserRole;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter @Setter
 @Table(name = "app_user")
 public class AppUser implements UserDetails {
 
@@ -121,5 +122,28 @@ public class AppUser implements UserDetails {
         this.surname = detailsDto.getSurname();
         this.phoneNumber = detailsDto.getPhoneNumber();
         this.address.updateDetails(detailsDto.getAddress());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AppUser appUser = (AppUser) o;
+        return Objects.equals(id, appUser.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

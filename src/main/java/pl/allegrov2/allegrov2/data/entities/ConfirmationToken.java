@@ -5,12 +5,11 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
 public class ConfirmationToken {
 
     @SequenceGenerator(
@@ -49,5 +48,27 @@ public class ConfirmationToken {
         this.createdAt = createdAt;
         this.expiresAt = expiredAt;
         this.appUser = appUser;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ConfirmationToken that = (ConfirmationToken) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "ConfirmationToken{" +
+                "id=" + id +
+                ", createdAt=" + createdAt +
+                ", expiresAt=" + expiresAt +
+                '}';
     }
 }

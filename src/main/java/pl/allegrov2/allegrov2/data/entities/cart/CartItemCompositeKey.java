@@ -8,7 +8,7 @@ import pl.allegrov2.allegrov2.data.entities.Product;
 
 import java.io.Serializable;
 
-@Data
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class CartItemCompositeKey implements Serializable {

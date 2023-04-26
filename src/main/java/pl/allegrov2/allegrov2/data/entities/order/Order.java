@@ -3,20 +3,20 @@ package pl.allegrov2.allegrov2.data.entities.order;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import pl.allegrov2.allegrov2.data.entities.AppUser;
 import pl.allegrov2.allegrov2.data.entities.cart.Cart;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
-@Data
 @Entity
 @IdClass(OrderCompositeKey.class)
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter @Setter
 @Table(name = "customer_order")
 public class Order {
 
@@ -32,9 +32,8 @@ public class Order {
     private Long id;
 
     @Id
-    @ToString.Exclude
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private AppUser user;
 
     @Enumerated(EnumType.STRING)
@@ -61,5 +60,27 @@ public class Order {
 
     private BigDecimal getTotalPrice(){
         return orderItems.stream().map(OrderItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return Objects.equals(id, order.id) && Objects.equals(user, order.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user);
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", orderStatus=" + orderStatus +
+                ", dateCreated=" + dateCreated +
+                '}';
     }
 }

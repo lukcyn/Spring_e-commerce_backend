@@ -8,20 +8,20 @@ import org.springframework.hateoas.RepresentationModel;
 import pl.allegrov2.allegrov2.data.entities.Product;
 
 import javax.annotation.Nonnegative;
+import java.util.Objects;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Builder
 @Table(name = "cart_item")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter @Setter
 @IdClass(CartItemCompositeKey.class)
 public class CartItem extends RepresentationModel<CartItem> {
 
     @Id
     @ManyToOne
     @JsonIgnore
-    @ToString.Exclude
     private Cart cart;
 
     @Id
@@ -40,6 +40,28 @@ public class CartItem extends RepresentationModel<CartItem> {
         this.quantity -= quantity;
 
         if(this.quantity < 0)
-            this.quantity = 0;
+            this.quantity = 0; // TODO throw
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        CartItem cartItem = (CartItem) o;
+        return Objects.equals(cart, cartItem.cart) && Objects.equals(product, cartItem.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), cart, product);
+    }
+
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "cart=" + cart +
+                ", product=" + product +
+                '}';
     }
 }

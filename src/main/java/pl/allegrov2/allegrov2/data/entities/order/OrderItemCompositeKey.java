@@ -1,15 +1,13 @@
 package pl.allegrov2.allegrov2.data.entities.order;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import pl.allegrov2.allegrov2.data.entities.Product;
 
 import java.io.Serializable;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter @Setter
 public class OrderItemCompositeKey implements Serializable {
 
     private Order order;

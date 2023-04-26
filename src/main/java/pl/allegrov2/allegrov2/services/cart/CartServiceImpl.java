@@ -12,7 +12,6 @@ import pl.allegrov2.allegrov2.services.product.ProductService;
 import pl.allegrov2.allegrov2.validation.exceptions.NotFoundException;
 import pl.allegrov2.allegrov2.validation.exceptions.ResourceUnavailableException;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -28,7 +27,7 @@ public class CartServiceImpl implements CartService {
         Product product = productService.getById(productId);
         Cart cart = getCart(userEmail);
 
-        addItemToCart(cart, product, quantity);
+        addToCart(cart, product, quantity);
     }
 
     @Override
@@ -36,7 +35,26 @@ public class CartServiceImpl implements CartService {
         Product product = productService.getById(productId);
         Cart cart = getCart(userId);
 
-        addItemToCart(cart, product, quantity);
+        addToCart(cart, product, quantity);
+    }
+
+    @Override
+    public void addToCart(Cart cart, Product product, int quantity) {
+        long availableProducts = product.getStock();
+        throwIfUnavailable(availableProducts, quantity);
+
+        Optional<CartItem> cartItemExisting = getItemIfPresent(cart, product);
+
+        if (cartItemExisting.isPresent()) {
+            CartItem item = cartItemExisting.get();
+            throwIfUnavailable(availableProducts - item.getQuantity(), quantity);
+            item.addQuantity(quantity);
+        } else {
+            CartItem newCartItem = new CartItem(cart, product, quantity);
+            cart.addItem(newCartItem);
+        }
+
+        cartRepository.save(cart);
     }
 
     @Override
@@ -54,12 +72,19 @@ public class CartServiceImpl implements CartService {
     public Cart removeItem(String userEmail, Long productId, int decQuantity) {
         Cart cart = getCart(userEmail);
         Product product = productService.getById(productId);
+
+        return removeItem(cart, product, decQuantity);
+    }
+
+    @Override
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    public Cart removeItem(Cart cart, Product product, int decQuantity) {
         Optional<CartItem> cartItem = getItemIfPresent(cart, product);
 
         if(cartItem.isPresent())
-            modifyItemQuantity(cart, cartItem.get(), product, decQuantity);
+            modifyCartItemQuantity(cart, cartItem.get(), product, decQuantity);
         else
-            throw new NotFoundException("No such product with id " + productId + " in cart");
+            throw new NotFoundException("No such product with id " + product.getId() + " in cart");
 
         return cart;
     }
@@ -72,7 +97,7 @@ public class CartServiceImpl implements CartService {
         cart.getCartItems().clear();
     }
 
-    public void modifyItemQuantity(Cart cart, CartItem item, Product product, int quantity){
+    public void modifyCartItemQuantity(Cart cart, CartItem item, Product product, int quantity){
         item.decreaseQuantity(quantity);
 
         if(item.getQuantity() == 0){
@@ -80,32 +105,13 @@ public class CartServiceImpl implements CartService {
             cartRepository.deleteCartItem(cart.getId(), product.getId());
         }
         else
-            cartRepository.save(cart);
+            cartItemRepository.save(item);
     }
 
     private Optional<CartItem> getItemIfPresent(Cart cart, Product product) {
         return cart.getCartItems().stream()
                 .filter(cartItem -> cartItem.getProduct().getId().equals(product.getId()))
                 .findFirst();
-    }
-
-    private void addItemToCart(Cart cart, Product product, int desiredQuantity) {
-
-        long availableProducts = product.getStock();
-        throwIfUnavailable(availableProducts, desiredQuantity);
-
-        Optional<CartItem> cartItemExisting = getItemIfPresent(cart, product);
-
-        if (cartItemExisting.isPresent()) {
-            CartItem item = cartItemExisting.get();
-            throwIfUnavailable(availableProducts - item.getQuantity(), desiredQuantity);
-            item.addQuantity(desiredQuantity);
-        } else {
-            CartItem newCartItem = new CartItem(cart, product, desiredQuantity);
-            cart.addItem(newCartItem);
-        }
-
-        cartRepository.save(cart);
     }
 
     private void throwIfUnavailable(long availableQuantity, int desiredQuantity){

@@ -30,6 +30,7 @@ public class Seeder {
 
     public AppUser generateUser(AppUserRole role, String email){
         Cart cart = Cart.builder()
+                .cartItems(new ArrayList<>())
                 .build();
 
 
@@ -71,13 +72,13 @@ public class Seeder {
                 .toList();
     }
 
-    public Product generateProduct(List<String> brandNames){
+    public Product generateProduct(List<String> brandNames, long stock){
         Product product = new Product(
                 null,
                 brandNames.get(random.nextInt(0, brandNames.size())),
                 faker.commerce().productName(),
                 BigDecimal.valueOf(random.nextFloat(1.0f, 1000.0f)),
-                random.nextLong(0, 10)
+                stock
         );
 
         Photo photo = new Photo(faker.internet().url(), product);
@@ -87,6 +88,10 @@ public class Seeder {
         product.setPhotos(new ArrayList<>(photos));
 
         return product;
+    }
+
+    public Product generateProduct(List<String> brandNames){
+        return generateProduct(brandNames, random.nextLong(0, 10));
     }
 
     public List<Product> generateProducts(int amount, List<String> brandNames){

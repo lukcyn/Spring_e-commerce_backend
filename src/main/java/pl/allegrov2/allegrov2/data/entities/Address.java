@@ -6,13 +6,13 @@ import lombok.*;
 import org.hibernate.annotations.Nationalized;
 import pl.allegrov2.allegrov2.data.dto.AddressDto;
 
+import java.util.Objects;
+
+@Entity
+@Builder
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
-@EqualsAndHashCode
-@Builder
-@Entity
 @Table(name = "address")
 public class Address {
 
@@ -43,7 +43,6 @@ public class Address {
 
     @OneToOne(mappedBy = "address", optional = false)
     @JsonIgnore
-    @ToString.Exclude
     private AppUser user;
 
     public Address(String streetName,
@@ -63,5 +62,29 @@ public class Address {
         this.streetNumber = address.getStreetNumber();
         this.residenceNumber = address.getResidenceNumber();
         this.zipcode = address.getZipcode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return Objects.equals(id, address.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", streetName='" + streetName + '\'' +
+                ", streetNumber=" + streetNumber +
+                ", residenceNumber=" + residenceNumber +
+                ", zipcode='" + zipcode + '\'' +
+                '}';
     }
 }

@@ -9,12 +9,13 @@ import pl.allegrov2.allegrov2.validation.exceptions.QuantityCriteriaNotMetExcept
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Objects;
 
-@Data
 @Entity
-@Table(name = "product")
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
+@Getter @Setter
+@Table(name = "product")
 public class Product extends RepresentationModel<Product> {
 
     @SequenceGenerator(
@@ -69,5 +70,30 @@ public class Product extends RepresentationModel<Product> {
             throw new QuantityCriteriaNotMetException(this, quantity);
 
         stock -= quantity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Product product = (Product) o;
+        return Objects.equals(id, product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", brandName='" + brandName + '\'' +
+                ", modelName='" + modelName + '\'' +
+                ", price=" + price +
+                ", stock=" + stock +
+                '}';
     }
 }
