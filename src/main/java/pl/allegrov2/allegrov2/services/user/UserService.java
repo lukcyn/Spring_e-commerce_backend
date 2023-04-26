@@ -32,4 +32,6 @@ public interface UserService extends UserDetailsService {
      *  Updates user password if current password is provided.
      * */
     void updatePassword(AppUser user, String oldPassword, String newPassword);
+
+    long getIdByUsername(String email);
 }

@@ -19,7 +19,6 @@ public class CartController {
     private final CartService cartService;
     private final JwtService jwtService;
     private final CartAssembler cartAssembler;
-    private final ProductAssembler productAssembler;
 
     @PutMapping
     public ResponseEntity<Void> addProductToCart(

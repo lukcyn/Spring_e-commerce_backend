@@ -30,7 +30,6 @@ public class EnabledUserFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-
             final String username = jwtService.extractUsernameFromAuthHeader(authHeader);
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -43,6 +42,3 @@ public class EnabledUserFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
-
-// io.jsonwebtoken.io.DecodingException: Illegal base64url character: ' '
-//eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJyYW5kb21Vc2VyQHJhbmRvbS5jb20iLCJpYXQiOjE2ODEyMDU4NzgsImV4cCI6MTY4MTI5MjI3OH0.ixzPHk55OcEq5x61S83nN33CFMZ0ZaHMJ_4_7oOM8rc

@@ -6,11 +6,13 @@ import org.springframework.stereotype.Service;
 import pl.allegrov2.allegrov2.data.entities.Product;
 import pl.allegrov2.allegrov2.data.entities.cart.Cart;
 import pl.allegrov2.allegrov2.data.entities.cart.CartItem;
+import pl.allegrov2.allegrov2.repositories.CartItemRepository;
 import pl.allegrov2.allegrov2.repositories.CartRepository;
 import pl.allegrov2.allegrov2.services.product.ProductService;
 import pl.allegrov2.allegrov2.validation.exceptions.NotFoundException;
 import pl.allegrov2.allegrov2.validation.exceptions.ResourceUnavailableException;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
@@ -19,6 +21,7 @@ public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
     private final ProductService productService;
+    private final CartItemRepository cartItemRepository;
 
     @Override
     public void addToCart(String userEmail, Long productId, int quantity) {
@@ -59,6 +62,14 @@ public class CartServiceImpl implements CartService {
             throw new NotFoundException("No such product with id " + productId + " in cart");
 
         return cart;
+    }
+
+    // FIXME check if works
+    @Override
+    @Transactional
+    public void clearCart(Cart cart) {
+        cartItemRepository.deleteAll(cart.getCartItems());
+        cart.getCartItems().clear();
     }
 
     public void modifyItemQuantity(Cart cart, CartItem item, Product product, int quantity){

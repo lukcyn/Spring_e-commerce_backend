@@ -15,17 +15,17 @@ import java.util.List;
 public class Cart {
 
     @Id
-    @Column(name = "app_user_id")
+    @Column(name = "customer_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
-    @JoinColumn(name = "app_user_id")
     @JsonIgnore
     @ToString.Exclude
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id")
     private AppUser user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart", orphanRemoval = true)
     private List<CartItem> cartItems;
 
     public void addItem(CartItem cartItem){

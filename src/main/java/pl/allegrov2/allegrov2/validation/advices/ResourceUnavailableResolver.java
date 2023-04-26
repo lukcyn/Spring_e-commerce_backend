@@ -6,13 +6,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import pl.allegrov2.allegrov2.validation.exceptions.ResourceUnavailableException;
-import pl.allegrov2.allegrov2.validation.exceptions.UnauthorizedException;
 
 @ControllerAdvice
-public class ResourceUnavailableAdvice {
+public class ResourceUnavailableResolver {
 
     @ResponseBody
-    @ExceptionHandler(UnauthorizedException.class)
+    @ExceptionHandler(ResourceUnavailableException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String unauthorizedHandler(ResourceUnavailableException ex){
         return ex.getMessage();

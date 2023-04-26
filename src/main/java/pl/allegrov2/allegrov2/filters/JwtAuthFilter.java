@@ -44,7 +44,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
 
-        //fixme to different filter
         if(jwtService.isTokenExpired(jwtService.extractTokenFromAuthHeader(authHeader)))
         {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token has expired. Login at " +

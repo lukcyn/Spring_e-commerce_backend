@@ -9,10 +9,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.allegrov2.allegrov2.data.dto.UserDetailsBasicDto;
 import pl.allegrov2.allegrov2.data.entities.cart.Cart;
+import pl.allegrov2.allegrov2.data.entities.order.Order;
 import pl.allegrov2.allegrov2.data.enums.AppUserRole;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 
 @Data
@@ -71,6 +73,10 @@ public class AppUser implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn       // TODO: Should admin have cart?
     private Cart cart;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private List<Order> orders;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

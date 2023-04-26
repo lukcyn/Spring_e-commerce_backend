@@ -5,6 +5,9 @@ import org.springframework.data.domain.Pageable;
 import pl.allegrov2.allegrov2.data.entities.Product;
 import pl.allegrov2.allegrov2.data.helpers.ProductFilter;
 
+import java.util.List;
+import java.util.Map;
+
 
 public interface ProductService {
 
@@ -17,4 +20,6 @@ public interface ProductService {
     Page<Product> getPage(Pageable pageable);
 
     Page<Product> getPage(ProductFilter filter, Pageable pageable);
+
+    void decreaseQuantity(Map<Product, Integer> productsWithQuantities);
 }

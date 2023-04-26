@@ -5,16 +5,16 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
+import pl.allegrov2.allegrov2.validation.exceptions.QuantityCriteriaNotMetException;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+@Data
 @Entity
 @Table(name = "product")
-@Getter @Setter
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-@ToString
+@EqualsAndHashCode(callSuper = true)
 public class Product extends RepresentationModel<Product> {
 
     @SequenceGenerator(
@@ -29,7 +29,7 @@ public class Product extends RepresentationModel<Product> {
     )
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", orphanRemoval = true)   // TODO should return in cart?
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", orphanRemoval = true)
     private List<Photo> photos;
 
     @Column(nullable = false)
@@ -56,5 +56,18 @@ public class Product extends RepresentationModel<Product> {
     @JsonIgnore
     public boolean isAvailable(){
         return stock > 0;
+    }
+
+    @JsonIgnore
+    public String shortName(){
+        return brandName + " " + modelName;
+    }
+
+    @JsonIgnore
+    public void decreaseStock(int quantity){
+        if (quantity > stock)
+            throw new QuantityCriteriaNotMetException(this, quantity);
+
+        stock -= quantity;
     }
 }
