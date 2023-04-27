@@ -17,7 +17,7 @@ public class CartAssembler implements RepresentationModelAssembler<Cart, EntityM
 
     private final ProductAssembler productAssembler;
     private final CartItemAssembler cartItemAssembler;
-    // TODO: add links to product
+
     @Override
     public EntityModel<Cart> toModel(Cart cart) {
 

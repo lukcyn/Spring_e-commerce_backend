@@ -20,6 +20,7 @@ import java.util.Objects;
 public class CartItem extends RepresentationModel<CartItem> {
 
     @Id
+    @MapsId("id")
     @ManyToOne
     @JsonIgnore
     private Cart cart;
@@ -40,7 +41,7 @@ public class CartItem extends RepresentationModel<CartItem> {
         this.quantity -= quantity;
 
         if(this.quantity < 0)
-            this.quantity = 0; // TODO throw
+            this.quantity = 0;
     }
 
     @Override
@@ -54,7 +55,7 @@ public class CartItem extends RepresentationModel<CartItem> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), cart, product);
+        return Objects.hash(cart, product);
     }
 
     @Override

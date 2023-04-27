@@ -13,7 +13,6 @@ import pl.allegrov2.allegrov2.services.product.ProductService;
 import pl.allegrov2.allegrov2.services.user.UserService;
 import pl.allegrov2.allegrov2.validation.exceptions.EmptyCartException;
 import pl.allegrov2.allegrov2.validation.exceptions.NotFoundException;
-import pl.allegrov2.allegrov2.validation.exceptions.QuantityCriteriaNotMetException;
 
 import java.util.List;
 import java.util.Map;
@@ -29,15 +28,16 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 
-
-    // TODO what if two users want to buy same product?
     @Override
     public Order createOrderForCart(String username) {
         AppUser user = userService.getUser(username);
+        return createOrderAndApplyChanges(user.getCart(), user);
+    }
+
+    @Override
+    public Order createOrderForCart(AppUser user) {
         Cart cart = user.getCart();
-
         checkIfCartValid(cart);
-
         return createOrderAndApplyChanges(cart, user);
     }
 
@@ -86,7 +86,6 @@ public class OrderServiceImpl implements OrderService {
     private Order createOrderAndApplyChanges(Cart cart, AppUser user){
         Order order = new Order(cart, user);
 
-        // FIXME how to prevent two users of decreasing quantity?
         decreaseQuantityOfProducts(cart);
         cartService.clearCart(cart);
 

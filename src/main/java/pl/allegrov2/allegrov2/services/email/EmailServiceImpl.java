@@ -29,5 +29,4 @@ public class EmailServiceImpl implements EmailService {
         message.setText(email);
         mailSender.send(message);
     }
-          // TODO: ideally should use queue to retry sending emails
 }

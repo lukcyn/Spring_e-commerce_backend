@@ -3,7 +3,6 @@ package pl.allegrov2.allegrov2.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.allegrov2.allegrov2.assemblers.OrderAssembler;
 import pl.allegrov2.allegrov2.data.entities.order.Order;
@@ -20,8 +19,7 @@ public class OrderController {
 
     private final OrderAssembler orderAssembler;
 
-    // product stocks change, order is created,
-    // FIXME: there are no order items in order, cart is not cleared
+
     @GetMapping("/checkout")
     public EntityModel<Order> checkout(@RequestHeader("Authorization") String authHeader) {
         String username = jwtService.extractUsernameFromAuthHeader(authHeader);

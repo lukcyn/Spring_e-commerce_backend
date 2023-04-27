@@ -70,9 +70,8 @@ public class AppUser implements UserDetails {
     private Address address;
 
     @JsonIgnore
-    @ToString.Exclude
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn       // TODO: Should admin have cart?
+    @PrimaryKeyJoinColumn
     private Cart cart;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

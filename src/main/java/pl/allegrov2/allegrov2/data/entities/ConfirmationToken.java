@@ -23,7 +23,7 @@ public class ConfirmationToken {
     )
     private Long id;
 
-    @Column(nullable = false, unique = true)  //todo make sure there are no 2 the same tokens id db
+    @Column(nullable = false, unique = true)
     private String token;
 
     @CreationTimestamp

@@ -21,11 +21,12 @@ public class Cart {
 
     @MapsId
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "customer_id")
     private AppUser user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart", fetch = FetchType.EAGER, orphanRemoval = true)
+    @PrimaryKeyJoinColumn
     private List<CartItem> cartItems;
 
     public void addItem(CartItem cartItem){

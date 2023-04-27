@@ -14,7 +14,6 @@ public class ProductFilter {
     private String searchString;
     private boolean onlyInStock;
 
-    // TODO sort
 
     public Optional<String> getSearchString() {
         return Optional.ofNullable(searchString);

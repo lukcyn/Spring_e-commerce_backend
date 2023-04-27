@@ -30,7 +30,6 @@ public class SecurityConfig {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserService userService;
 
-    // TODO send message on token expired
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

@@ -59,12 +59,14 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Cart getCart(String userEmail) {
-        return cartRepository.getCartOfUser(userEmail);
+        return cartRepository.getCartOfUser(userEmail)
+                .orElseThrow(() -> new NotFoundException("No cart for user with email " + userEmail));
     }
 
     @Override
     public Cart getCart(Long userId) {
-        return cartRepository.getCartOfUser(userId);
+        return cartRepository.getCartOfUser(userId)
+                .orElseThrow(() -> new NotFoundException("No cart for user with id " + userId));
     }
 
     @Override
@@ -89,12 +91,12 @@ public class CartServiceImpl implements CartService {
         return cart;
     }
 
-    // FIXME check if works
     @Override
     @Transactional
     public void clearCart(Cart cart) {
         cartItemRepository.deleteAll(cart.getCartItems());
         cart.getCartItems().clear();
+        cartRepository.save(cart);
     }
 
     public void modifyCartItemQuantity(Cart cart, CartItem item, Product product, int quantity){

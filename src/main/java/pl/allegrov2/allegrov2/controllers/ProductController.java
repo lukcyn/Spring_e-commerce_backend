@@ -45,7 +45,6 @@ public class ProductController {
         return productAssembler.toModel(productService.getById(id));
     }
 
-    // TODO: sort
     @GetMapping("/products/filtered")
     public CollectionModel<EntityModel<Product>> getFilteredProducts(
             @RequestParam(defaultValue = "") String search,

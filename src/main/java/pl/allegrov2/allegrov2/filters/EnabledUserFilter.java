@@ -14,7 +14,6 @@ import pl.allegrov2.allegrov2.services.token.JwtService;
 
 import java.io.IOException;
 
-//fixme add to security config after tests
 @Component
 @AllArgsConstructor
 public class EnabledUserFilter extends OncePerRequestFilter {

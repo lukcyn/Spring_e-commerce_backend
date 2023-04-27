@@ -44,8 +44,6 @@ public class UserServiceImpl implements UserService {
     }
 
     public void updateDetails(AppUser user, UserDetailsBasicDto newDetails){
-        // fixme remove ability to change email
-
         user.updateDetails(newDetails);
         userRepository.save(user);
     }
